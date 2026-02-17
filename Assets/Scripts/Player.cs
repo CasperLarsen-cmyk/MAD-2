@@ -9,15 +9,18 @@ public class Player : MonoBehaviour
     bool alive = true;
     Rigidbody2D body;
 
+    public DodgerAttributes attributes;
+
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        attributes = new(3);
     }
 
     void Update()
     {
         if (Keyboard.current.spaceKey.ReadValue() > 0.5 && !alive)
-        {
+        {   //Resets scene if you died and press space
             SceneManager.LoadScene("SampleScene");
         }
 
@@ -49,11 +52,15 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && alive)
         {
-            transform.Rotate(new Vector3(0, 0, 90));
             collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(-5, 5), 5);
-            Destroy(collision.gameObject.GetComponent<Collider>());
-            alive = false;
-            GameManager.EndGame();
+            Destroy(collision.gameObject.GetComponent<Collider2D>());
+
+            if (attributes.TakeDamage(1))
+            {
+                transform.Rotate(new Vector3(0, 0, 90));
+                alive = false;
+                GameManager.EndGame();
+            }
         }
     }
 }

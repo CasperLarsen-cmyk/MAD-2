@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
     public float enemyDelay = 1;
 
     public TextMeshProUGUI scoreTracker;
-    public static float score = 0;
+
+    private static Player player;
 
     private static bool started;
     private static bool ended;
@@ -17,9 +18,11 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        spawnOrigin = Camera.main.ViewportToWorldPoint(new Vector2(0, 1.2f));
-        spawnXAdd = Camera.main.ViewportToWorldPoint(new Vector2(1, 1.2f)).x - spawnOrigin.x;
+        spawnOrigin = Camera.main.ViewportToWorldPoint(new Vector2(0, 1.1f));
+        spawnXAdd = Camera.main.ViewportToWorldPoint(new Vector2(1, 1.1f)).x - spawnOrigin.x;
         spawnOrigin.z = 0;
+
+        player = FindFirstObjectByType<Player>();
 
         ResetStaticVariables();
     }
@@ -39,12 +42,11 @@ public class GameManager : MonoBehaviour
             enemy.GetComponent<Rigidbody2D>().AddTorque(60, ForceMode2D.Impulse);
         }
 
-        scoreTracker.text = score.ToString();
+        scoreTracker.text = player.attributes.GetScore().ToString();
     }
 
     private void ResetStaticVariables()
     {
-        score = 0;
         started = false;
         ended = false;
     }
@@ -54,9 +56,9 @@ public class GameManager : MonoBehaviour
         ended = true;
     }
 
-    public static float AddScore(float points)
+    public static float AddScore(int points)
     {
-        if (!ended) score += points;
-        return score;
+        if (!ended) player.attributes.AddScore(points);
+        return player.attributes.GetScore();
     }
 }

@@ -17,45 +17,45 @@ public class DodgerAttributes
         this.score = score;
     }
 
-    public int getMaxHP()
+    public int GetMaxHP()
     {
         return this.maxHP;
     }
 
-    public int getHP()
+    public int GetHP()
     {
         return this.HP;
     }
     
-    public int getScore()
+    public int GetScore()
     {
         return this.score;
     }
 
-    public void setMaxHP(int maxHP)
+    public void SetMaxHP(int maxHP)
     {
         this.maxHP = maxHP;
     }
 
-    public void setHP(int HP)
+    public void SetHP(int HP)
     {
         this.HP = HP;
     }
 
-    public void setScore(int score)
+    public void SetScore(int score)
     {
         this.score = score;
     }
 
-    public int addScore(int value)
+    public int AddScore(int score)
     {
-        this.score += value;
+        this.score += score;
         return this.score;
     }
 
-    public bool takeDamage(int damage)
+    public bool TakeDamage(int damage)
     {
         this.HP -= damage;
-        return HP < 0;
+        return HP <= 0;
     }
 }
