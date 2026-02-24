@@ -1422,7 +1422,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8dc775ce33a8cd4eb373482d0c99747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  enemyPrefab: {fileID: 1246464100259442426, guid: 841c781b919f5a34d988ffda0a15c58d, type: 3}
+  enemyPrefabs:
+  - {fileID: 1246464100259442426, guid: 9eab0ddeb476fe64b8935291916db067, type: 3}
+  - {fileID: 1246464100259442426, guid: 841c781b919f5a34d988ffda0a15c58d, type: 3}
+  - {fileID: 1246464100259442426, guid: 92a480332efb68548a85ce94c7817609, type: 3}
   enemyDelay: 1
   scoreTracker: {fileID: 644504080}
 --- !u!1660057539 &9223372036854775807

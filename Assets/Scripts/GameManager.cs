@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject enemyPrefab;
+    public GameObject[] enemyPrefabs;
     public float enemyDelay = 1;
 
     public TextMeshProUGUI scoreTracker;
@@ -36,7 +36,8 @@ public class GameManager : MonoBehaviour
         {
             spawnTimer -= enemyDelay;
             
-            GameObject enemy = Instantiate(enemyPrefab);
+            var prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+            GameObject enemy = Instantiate(prefab);
             enemy.transform.position = spawnOrigin;
             enemy.transform.Translate(new Vector2(Random.Range(0, spawnXAdd), 0));
             enemy.GetComponent<Rigidbody2D>().AddTorque(60, ForceMode2D.Impulse);
