@@ -35,11 +35,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.spaceKey.ReadValue() > 0.5 && !alive)
-        {   //Resets scene if you died and press space
-            SceneManager.LoadScene("SampleScene");
-        }
-
         if (!alive) return;
 
         //Vector3 acceleration = Accelerometer.current.acceleration.ReadValue();
@@ -57,6 +52,7 @@ public class Player : MonoBehaviour
             body.linearVelocityX = 0;
         }
 
+        print(InputManager.swipeUp);
         if (InputManager.swipeUp) Fireball();
 
         float viewportPosX = Camera.main.WorldToViewportPoint(transform.position).x;

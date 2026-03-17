@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -33,7 +35,13 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (ended && (Keyboard.current.spaceKey.ReadValue() > 0.5 || InputManager.swiping))
+        {   //Resets scene if you died and press space
+            SceneManager.LoadScene("SampleScene");
+        }
+
         if (ended) return;
+
         if (!started && InputManager.IsPressing(out Vector2 position)) started = true;
         if (started) spawnTimer += Time.deltaTime;
 
@@ -49,7 +57,7 @@ public class GameManager : MonoBehaviour
         }
 
         //var acc = Accelerometer.current;
-        //if (acc != null) Physics2D.gravity = acc.acceleration.value * 9.81f;
+        //if (acc != null) Physics2D.gravity = acc.acceleration.value;
 
         scoreTracker.text = player.attributes.GetScore().ToString();
     }

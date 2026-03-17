@@ -39,8 +39,8 @@ public class InputManager : MonoBehaviour
     private static float swipeSensitivity = 5f;
     private static float swipeRatio;
 
-    public float swipeSpeed;
-    public float ratio;
+    public float swipeSpeed = 4.0f;
+    public float ratio = 6.0f;
 
     private void Start()
     {
@@ -66,11 +66,21 @@ public class InputManager : MonoBehaviour
             //print("Diff: " + diff.ToString());
             swipeUp = diff.y > swipeSensitivity && Mathf.Abs(diff.y) > Mathf.Abs(diff.x) * swipeRatio;
             swipeDown = diff.y < -swipeSensitivity && Mathf.Abs(diff.y) > Mathf.Abs(diff.x) * swipeRatio;
-            swipeLeft = diff.x < -swipeSensitivity && Mathf.Abs(diff.y) > Mathf.Abs(diff.x) * swipeRatio;
-            swipeRight = diff.x > swipeSensitivity && Mathf.Abs(diff.y) > Mathf.Abs(diff.x) * swipeRatio;
+            swipeLeft = diff.x < -swipeSensitivity && Mathf.Abs(diff.x) > Mathf.Abs(diff.y) * swipeRatio;
+            swipeRight = diff.x > swipeSensitivity && Mathf.Abs(diff.x) > Mathf.Abs(diff.y) * swipeRatio;
             swiping = swipeUp || swipeDown || swipeLeft || swipeRight;
 
+            print("S: " + swiping + "\nU: " + swipeUp + " D: " + swipeDown + " L: " + swipeLeft + " R: " + swipeRight);
+
             lPos = touch.position.value;
+        }
+
+        if (touch.phase.value == UnityEngine.InputSystem.TouchPhase.Ended)
+        {
+            swipeUp = false;
+            swipeDown = false;
+            swipeLeft = false;
+            swipeRight = false;
         }
     }
 }
