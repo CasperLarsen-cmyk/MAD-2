@@ -30,37 +30,39 @@ public class InputManager : MonoBehaviour
         return false;
     }
     static Vector2 lPos = Vector2.zero;
+
+    public static float swipeSensitivity = 5f;
+    public static bool swiping;
+    public static bool swipeUp;
+    public static bool swipeDown;
+    public static bool swipeLeft;
+    public static bool swipeRight;
     
-    //bool swiping;
-    public static bool IsSwipingUp()
+    public void Update()
     {
-        if (Touchscreen.current == null) return false;
-        
+        if (Touchscreen.current == null) return;
+
         var touch = Touchscreen.current.primaryTouch;
 
         if (touch.phase.value == UnityEngine.InputSystem.TouchPhase.Began)
         {
             //print("Began");
             lPos = touch.position.value;
-            return false;
         }
-        
+
         if (touch.phase.value == UnityEngine.InputSystem.TouchPhase.Moved)
         {
             var diff = (touch.position.value - lPos) * Time.deltaTime;
             //print("Diff: " + diff.ToString());
-            if (diff.y > 5)
-            {
-                return true;
-            }
-            lPos = touch.position.value;
-            return false;
-        }
+            swiping = diff.magnitude > swipeSensitivity;
+            swipeUp = swiping && diff.y > swipeSensitivity;
+            swipeDown = swiping && diff.y < -swipeSensitivity;
+            swipeLeft = swiping && diff.x < -swipeSensitivity;
+            swipeRight = swiping && diff.x > swipeSensitivity;
 
-        /*if (touch.phase.value == UnityEngine.InputSystem.TouchPhase.Ended)
-        {
-            print("Ended");
-        }*/
-        return false;
+            lPos = touch.position.value;
+
+            if(swiping) print(swipeUp + "/" + swipeDown + "/" + swipeLeft + "/" + swipeRight);
+        }
     }
 }

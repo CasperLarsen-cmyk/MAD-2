@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -46,6 +47,9 @@ public class GameManager : MonoBehaviour
             enemy.transform.Translate(new Vector2(Random.Range(0, spawnXAdd), 0));
             enemy.GetComponent<Rigidbody2D>().AddTorque(60, ForceMode2D.Impulse);
         }
+
+        //var acc = Accelerometer.current;
+        //if (acc != null) Physics2D.gravity = acc.acceleration.value * 9.81f;
 
         scoreTracker.text = player.attributes.GetScore().ToString();
     }

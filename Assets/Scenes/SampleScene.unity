@@ -1951,6 +1951,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1687811104}
+  - component: {fileID: 1687811106}
   - component: {fileID: 1687811105}
   m_Layer: 0
   m_Name: Manager
@@ -1994,6 +1995,18 @@ MonoBehaviour:
   spawnWeights: 
   enemyDelay: 0.25
   scoreTracker: {fileID: 644504080}
+--- !u!114 &1687811106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687811103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baf9d38ea1404c04eb0a1a9ea013f7c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputManager
 --- !u!1 &1859422209
 GameObject:
   m_ObjectHideFlags: 0

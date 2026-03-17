@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
             body.linearVelocityX = 0;
         }
 
-        if (!fireballing && InputManager.IsSwipingUp())
+        if (!fireballing && InputManager.swipeUp)
         {
             Fireball();
         }
@@ -97,7 +97,7 @@ public class Player : MonoBehaviour
 
             fireballing = true;
             transform.GetChild(0).gameObject.SetActive(fireballing);
-            StartCoroutine(Chill(1f));
+            StartCoroutine(Chill(1.2f));
         }
     }
 
