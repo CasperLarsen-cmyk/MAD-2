@@ -28,7 +28,8 @@ public class InputManager : MonoBehaviour
 
         return false;
     }
-    static Vector2 lPos = Vector2.zero;
+
+    static Vector2 lastPos = Vector2.zero;
 
     public static bool swiping;
     public static bool swipeUp;
@@ -57,12 +58,12 @@ public class InputManager : MonoBehaviour
         if (touch.phase.value == UnityEngine.InputSystem.TouchPhase.Began)
         {
             //print("Began");
-            lPos = touch.position.value;
+            lastPos = touch.position.value;
         }
 
         if (touch.phase.value == UnityEngine.InputSystem.TouchPhase.Moved)
         {
-            var diff = (touch.position.value - lPos) * Time.deltaTime;
+            var diff = (touch.position.value - lastPos) * Time.deltaTime;
             //print("Diff: " + diff.ToString());
             swipeUp = diff.y > swipeSensitivity && Mathf.Abs(diff.y) > Mathf.Abs(diff.x) * swipeRatio;
             swipeDown = diff.y < -swipeSensitivity && Mathf.Abs(diff.y) > Mathf.Abs(diff.x) * swipeRatio;
@@ -72,7 +73,7 @@ public class InputManager : MonoBehaviour
 
             print("S: " + swiping + "\nU: " + swipeUp + " D: " + swipeDown + " L: " + swipeLeft + " R: " + swipeRight);
 
-            lPos = touch.position.value;
+            lastPos = touch.position.value;
         }
 
         if (touch.phase.value == UnityEngine.InputSystem.TouchPhase.Ended)
@@ -81,6 +82,7 @@ public class InputManager : MonoBehaviour
             swipeDown = false;
             swipeLeft = false;
             swipeRight = false;
+            swiping = false;
         }
     }
 }

@@ -87,12 +87,12 @@ public class Player : MonoBehaviour
 
         if (alive)
         {
-            body.linearVelocityY = 10;
+            body.linearVelocityY = 8;
             body.mass *= 20;
 
             fireballing = true;
             transform.GetChild(0).gameObject.SetActive(fireballing);
-            StartCoroutine(Chill(1.2f));
+            StartCoroutine(Chill(1.0f));
         }
     }
 

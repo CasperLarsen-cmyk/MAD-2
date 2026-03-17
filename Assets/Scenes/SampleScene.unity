@@ -2008,7 +2008,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
   swipeSpeed: 4
-  ratio: 6
+  ratio: 4
 --- !u!1 &1859422209
 GameObject:
   m_ObjectHideFlags: 0
