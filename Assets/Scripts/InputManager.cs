@@ -21,7 +21,6 @@ public class InputManager : MonoBehaviour
 
         if (Keyboard.current.aKey.isPressed ^ Keyboard.current.dKey.isPressed)
         {
-
             Vector2 dir = new ((-Keyboard.current.aKey.value + Keyboard.current.dKey.value) / 2 + 0.5f, 0);
             position = Camera.main.ViewportToWorldPoint(dir);
             return true;
@@ -31,13 +30,24 @@ public class InputManager : MonoBehaviour
     }
     static Vector2 lPos = Vector2.zero;
 
-    public static float swipeSensitivity = 5f;
     public static bool swiping;
     public static bool swipeUp;
     public static bool swipeDown;
     public static bool swipeLeft;
     public static bool swipeRight;
-    
+
+    private static float swipeSensitivity = 5f;
+    private static float swipeRatio;
+
+    public float swipeSpeed;
+    public float ratio;
+
+    private void Start()
+    {
+        swipeSensitivity = swipeSpeed;
+        swipeRatio = ratio;
+    }
+
     public void Update()
     {
         if (Touchscreen.current == null) return;
@@ -54,15 +64,13 @@ public class InputManager : MonoBehaviour
         {
             var diff = (touch.position.value - lPos) * Time.deltaTime;
             //print("Diff: " + diff.ToString());
-            swiping = diff.magnitude > swipeSensitivity;
-            swipeUp = swiping && diff.y > swipeSensitivity;
-            swipeDown = swiping && diff.y < -swipeSensitivity;
-            swipeLeft = swiping && diff.x < -swipeSensitivity;
-            swipeRight = swiping && diff.x > swipeSensitivity;
+            swipeUp = diff.y > swipeSensitivity && Mathf.Abs(diff.y) > Mathf.Abs(diff.x) * swipeRatio;
+            swipeDown = diff.y < -swipeSensitivity && Mathf.Abs(diff.y) > Mathf.Abs(diff.x) * swipeRatio;
+            swipeLeft = diff.x < -swipeSensitivity && Mathf.Abs(diff.y) > Mathf.Abs(diff.x) * swipeRatio;
+            swipeRight = diff.x > swipeSensitivity && Mathf.Abs(diff.y) > Mathf.Abs(diff.x) * swipeRatio;
+            swiping = swipeUp || swipeDown || swipeLeft || swipeRight;
 
             lPos = touch.position.value;
-
-            if(swiping) print(swipeUp + "/" + swipeDown + "/" + swipeLeft + "/" + swipeRight);
         }
     }
 }

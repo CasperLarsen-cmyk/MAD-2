@@ -57,10 +57,7 @@ public class Player : MonoBehaviour
             body.linearVelocityX = 0;
         }
 
-        if (!fireballing && InputManager.swipeUp)
-        {
-            Fireball();
-        }
+        if (InputManager.swipeUp) Fireball();
 
         float viewportPosX = Camera.main.WorldToViewportPoint(transform.position).x;
         if (viewportPosX > 1 && body.linearVelocityX > 0) body.linearVelocityX = 0;
@@ -90,6 +87,8 @@ public class Player : MonoBehaviour
 
     public void Fireball()
     {
+        if (fireballing) return;
+
         if (alive)
         {
             body.linearVelocityY = 10;
