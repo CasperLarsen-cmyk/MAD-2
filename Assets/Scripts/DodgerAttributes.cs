@@ -55,7 +55,7 @@ public class DodgerAttributes
 
     public bool TakeDamage(int damage)
     {
-        this.HP -= damage;
+        this.HP = System.Math.Clamp(this.HP - damage, 0, this.maxHP);
         return HP <= 0;
     }
 }

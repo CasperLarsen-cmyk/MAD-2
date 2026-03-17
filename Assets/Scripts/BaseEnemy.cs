@@ -1,5 +1,5 @@
 using UnityEngine;
-public abstract class BaseEnemy : MonoBehaviour
+public class BaseEnemy : MonoBehaviour
 {
     protected float gravityScale = 1f;
 

@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameObject[] enemyPrefabs;
+    public int[] spawnWeights;
     public float enemyDelay = 1;
 
     public TextMeshProUGUI scoreTracker;
@@ -15,9 +16,11 @@ public class GameManager : MonoBehaviour
     private Vector3 spawnOrigin;
     private float spawnXAdd;
     private float spawnTimer = 0;
+    private int spawnWeightSum = 0;
 
     void Start()
     {
+        foreach (int weight in spawnWeights) spawnWeightSum += weight;
         spawnOrigin = Camera.main.ViewportToWorldPoint(new Vector2(0, 1.1f));
         spawnXAdd = Camera.main.ViewportToWorldPoint(new Vector2(1, 1.1f)).x - spawnOrigin.x;
         spawnOrigin.z = 0;
@@ -32,7 +35,8 @@ public class GameManager : MonoBehaviour
         if (ended) return;
         if (!started && InputManager.IsPressing(out Vector2 position)) started = true;
         if (started) spawnTimer += Time.deltaTime;
-        if (spawnTimer > enemyDelay)
+
+        while (spawnTimer > enemyDelay)
         {
             spawnTimer -= enemyDelay;
             
