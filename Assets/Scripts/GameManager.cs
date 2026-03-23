@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
             enemy.GetComponent<Rigidbody2D>().AddTorque(60, ForceMode2D.Impulse);
         }
 
-        //var acc = Accelerometer.current;
+        var acc = Accelerometer.current;
         //if (acc != null) Physics2D.gravity = acc.acceleration.value;
 
         scoreTracker.text = player.attributes.GetScore().ToString();

@@ -26,6 +26,22 @@ public class InputManager : MonoBehaviour
             return true;
         }
 
+        if (Accelerometer.current != null)
+        {
+            var value = Accelerometer.current.acceleration.value.x;
+            if (value > 0.2)
+            {
+                position = Camera.main.ViewportToWorldPoint(Vector2.one);
+                return true;
+            }
+
+            if (value < -0.2)
+            {
+                position = Camera.main.ViewportToWorldPoint(Vector2.zero);
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -41,7 +57,7 @@ public class InputManager : MonoBehaviour
     private static float swipeRatio;
 
     public float swipeSpeed = 4.0f;
-    public float ratio = 6.0f;
+    public float ratio = 4.0f;
 
     private void Start()
     {
@@ -71,7 +87,7 @@ public class InputManager : MonoBehaviour
             swipeRight = diff.x > swipeSensitivity && Mathf.Abs(diff.x) > Mathf.Abs(diff.y) * swipeRatio;
             swiping = swipeUp || swipeDown || swipeLeft || swipeRight;
 
-            print("S: " + swiping + "\nU: " + swipeUp + " D: " + swipeDown + " L: " + swipeLeft + " R: " + swipeRight);
+            //print("S: " + swiping + "\nU: " + swipeUp + " D: " + swipeDown + " L: " + swipeLeft + " R: " + swipeRight);
 
             lastPos = touch.position.value;
         }

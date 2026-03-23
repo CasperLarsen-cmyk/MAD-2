@@ -70,14 +70,22 @@ public class Player : MonoBehaviour
 
             if (!fireballing && attributes.TakeDamage(1))
             {
+                GameManager.EndGame();
                 transform.Rotate(new Vector3(0, 0, 90));
                 alive = false;
-                GameManager.EndGame();
+            }
+            else
+            {
+                //Handheld.Vibrate();
+
+                //int time = 1f - 1f * (attributes.GetHP() / attributes.GetMaxHP());
+                Vibes.Vibrate(100);
+
+                SetSprite(spriteHit);
+                StartCoroutine(SetSpriteDelay(spriteNormal, hitDuration));
             }
 
             UpdateHealthbar();
-            SetSprite(spriteHit);
-            StartCoroutine(SetSpriteDelay(spriteNormal, hitDuration));
         }
     }
 
@@ -115,6 +123,12 @@ public class Player : MonoBehaviour
     void SetSprite(Sprite sprite)
     {
         sr.sprite = sprite;
+    }
+
+    static float RemapRange(float value, float min, float max, float newMin, float newMax)
+    {
+        float t = Mathf.InverseLerp(value, min, max);
+        return Mathf.Lerp(newMin, newMax, t);
     }
 
     IEnumerator SetSpriteDelay(Sprite sprite, float delay)
