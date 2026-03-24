@@ -1,9 +1,12 @@
+using System;
+using UnityEngine;
 
+[Serializable]
 public class DodgerAttributes
 {
-    int maxHP;
-    int HP;
-    int score;
+    [SerializeField] int maxHP;
+    [SerializeField] int HP;
+    [SerializeField] int score;
 
     public DodgerAttributes(int maxHP)
     {

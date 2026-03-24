@@ -1,7 +1,6 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -28,7 +27,9 @@ public class Player : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         SetSprite(spriteNormal);
 
-        attributes = new(maxHP);
+        //if (attributes == null) attributes = new(maxHP);
+        if (attributes.GetMaxHP() != maxHP) attributes = new(maxHP);
+
         lives.transform.parent.GetComponent<AspectRatioFitter>().aspectRatio = maxHP;
         UpdateHealthbar();
     }
@@ -52,7 +53,6 @@ public class Player : MonoBehaviour
             body.linearVelocityX = 0;
         }
 
-        print(InputManager.swipeUp);
         if (InputManager.swipeUp) Fireball();
 
         float viewportPosX = Camera.main.WorldToViewportPoint(transform.position).x;
@@ -136,4 +136,34 @@ public class Player : MonoBehaviour
         if (delay > 0) yield return new WaitForSeconds(delay);
         SetSprite(sprite);
     }
+
+    public PlayerData GetSaveData()
+    {
+        PlayerData data = new PlayerData();
+        data.attributes = attributes;
+        data.alive = alive;
+
+        data.position = GetComponent<Rigidbody2D>().position;
+        return data;
+    }
+
+    public void LoadSaveData(PlayerData data)
+    {
+        attributes = data.attributes;
+        alive = data.alive;
+
+        GetComponent<Rigidbody2D>().position = data.position;
+        UpdateHealthbar();
+    }
 }
+
+[Serializable]
+public struct PlayerData
+{
+    public DodgerAttributes attributes;
+    public bool alive;
+
+    public Vector3 position;
+}
+
+//    File.WriteAllText(k_ProjectSettingsPath, JsonUtility.ToJson(this));

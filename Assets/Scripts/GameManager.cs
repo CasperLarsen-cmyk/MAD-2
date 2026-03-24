@@ -1,8 +1,10 @@
+using System.IO;
+using System.Text;
 using TMPro;
+using Unity.Loading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,11 +21,9 @@ public class GameManager : MonoBehaviour
     private Vector3 spawnOrigin;
     private float spawnXAdd;
     private float spawnTimer = 0;
-    private int spawnWeightSum = 0;
 
     void Start()
     {
-        foreach (int weight in spawnWeights) spawnWeightSum += weight;
         spawnOrigin = Camera.main.ViewportToWorldPoint(new Vector2(0, 1.1f));
         spawnXAdd = Camera.main.ViewportToWorldPoint(new Vector2(1, 1.1f)).x - spawnOrigin.x;
         spawnOrigin.z = 0;
@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
         player = FindFirstObjectByType<Player>();
 
         ResetStaticVariables();
+        Time.timeScale = 0.0f;
     }
 
     void Update()
@@ -42,7 +43,11 @@ public class GameManager : MonoBehaviour
 
         if (ended) return;
 
-        if (!started && InputManager.IsPressing(out Vector2 position)) started = true;
+        if (!started && InputManager.IsPressing(out Vector2 position))
+        {
+            started = true;
+            Time.timeScale = 1.0f;
+        }
         if (started) spawnTimer += Time.deltaTime;
 
         while (spawnTimer > enemyDelay)
@@ -77,5 +82,57 @@ public class GameManager : MonoBehaviour
     {
         if (!ended) player.attributes.AddScore(points);
         return player.attributes.GetScore();
+    }
+    readonly FileInfo file = new(Application.dataPath + "/savedata.json");
+
+    public void Save()
+    {
+        print("Saving");
+        SaveBlob blob = SaveBlob.Create();
+        print("Create");
+        string json = JsonUtility.ToJson(blob, true);
+        print(json);
+        file.Delete();
+        print("Delete");
+
+        using StreamWriter stream = new(file.FullName);
+        print(file.FullName);
+        stream.Write(json);
+        print("Done");
+    }
+
+    static SaveBlob blob;
+    
+    public void Load()
+    {
+        SceneManager.LoadScene("SampleScene");
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        
+        StreamReader stream = new(file.FullName);
+        string json = stream.ReadToEnd();
+        stream.Close();
+
+        blob = JsonUtility.FromJson<SaveBlob>(json);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        FindFirstObjectByType<Player>().LoadSaveData(blob.dataPlayer);
+
+        BaseEnemy[] enemies = FindObjectsByType<BaseEnemy>(FindObjectsSortMode.None);
+        foreach (BaseEnemy enemy in enemies)
+        {
+            Destroy(enemy.gameObject);
+        }
+
+        foreach (EnemyData data in blob.dataEnemies)
+        {
+            var enemy = Instantiate(enemyPrefabs[0], data.position, Quaternion.identity);
+            enemy.GetComponent<BaseEnemy>().LoadSaveData(data);
+        }
+
+        //Cleanup
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        blob = null;
     }
 }

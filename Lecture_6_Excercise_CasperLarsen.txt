@@ -2,3 +2,4 @@ https://github.com/CasperLarsen-cmyk/MAD-2
 
 Exceedingly bad accelerometer controls
 considered using gyroscope instead or in combination
+I also added vibration when you get hit but that only works when compiled and running as an app and not in unity remote
