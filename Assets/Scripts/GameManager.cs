@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 
         ResetStaticVariables();
         Time.timeScale = 0.0f;
+
+        FindFirstObjectByType<Player>().SubscribeDeathEvent(EndGame);
     }
 
     void Update()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,8 @@ public class Player : MonoBehaviour
     Rigidbody2D body;
     SpriteRenderer sr;
     private bool fireballing;
+
+    readonly List<Action> onDeathEvent = new();
 
     void Start()
     {
@@ -70,9 +73,9 @@ public class Player : MonoBehaviour
 
             if (!fireballing && attributes.TakeDamage(1))
             {
-                GameManager.EndGame();
                 transform.Rotate(new Vector3(0, 0, 90));
                 alive = false;
+                foreach (Action action in onDeathEvent) { action(); }
             }
             else
             {
@@ -87,6 +90,11 @@ public class Player : MonoBehaviour
 
             UpdateHealthbar();
         }
+    }
+
+    public void SubscribeDeathEvent(Action action)
+    {
+        onDeathEvent.Add(action);
     }
 
     public void Fireball()

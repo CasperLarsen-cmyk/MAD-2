@@ -1,11 +1,29 @@
 using System.IO;
 using UnityEngine;
+
 #if UNITY_ANDROID && !UNITY_EDITOR
 using UnityEngine.Android;
 #endif
 
 public class BigBrother : MonoBehaviour
 {
+    private BigBrother _instance;
+    public BigBrother instance {
+        get {
+            if (_instance == null)
+            {
+                _instance = this;
+            }
+            else if (_instance != this)
+            {
+                Destroy(_instance);
+                _instance = this;
+            }
+            return _instance;
+        }
+    }
+    public float test { get; private set; }
+
     readonly FileInfo file = new(Application.dataPath + "/Player data.csv");
     float timer;
     float delay = 0.25f;
@@ -15,9 +33,7 @@ public class BigBrother : MonoBehaviour
 #if UNITY_ANDROID && !UNITY_EDITOR
         // Request write permission if needed (older Android)
         if (!Permission.HasUserAuthorizedPermission(Permission.ExternalStorageWrite))
-        {
             Permission.RequestUserPermission(Permission.ExternalStorageWrite);
-        }
 #endif
 
         if (!file.Exists)
@@ -30,19 +46,28 @@ public class BigBrother : MonoBehaviour
             using StreamWriter stream = new(file.FullName, true);
             stream.WriteLine("0,0,0,0");
         }
+
+        FindFirstObjectByType<Player>().SubscribeDeathEvent(SaveStats);
     }
 
+    //float lastTime;
     void Update()
     {
         timer += Time.deltaTime;
         if (GameManager.started && !GameManager.ended && timer >= delay)
         {
             timer -= delay;
-            Save();
+            SaveStats();
         }
+
+        /*if (Time.time - lastTime >= delay)
+        {
+            lastTime += Time.time;
+            //do something
+        }*/
     }
 
-    public void Save()
+    public void SaveStats()
     {
         var player = FindFirstObjectByType<Player>();
 
