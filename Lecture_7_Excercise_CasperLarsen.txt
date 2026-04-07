@@ -1,0 +1,5 @@
+https://github.com/CasperLarsen-cmyk/MAD-2
+
+Added a save and load button that saves position and velocity of enemies as well as some player info so the player can save and come back to the game later, for this i chose to use JSON as it allows storing complex data like arrays and vectors easily.
+also added logging the players data in the CSV format, i chose to use CSV since i only wanted to store simple numbers in this files
+i also had to update unity version because i was really annoyed by a bug that made the unity editor open a library folder every time code reompiled, so i apologize if you also have to.

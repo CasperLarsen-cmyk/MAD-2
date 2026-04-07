@@ -1,7 +1,5 @@
 using System.IO;
-using System.Text;
 using TMPro;
-using Unity.Loading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -16,8 +14,8 @@ public class GameManager : MonoBehaviour
 
     private static Player player;
 
-    private static bool started;
-    private static bool ended;
+    public static bool started;
+    public static bool ended;
     private Vector3 spawnOrigin;
     private float spawnXAdd;
     private float spawnTimer = 0;
@@ -87,18 +85,12 @@ public class GameManager : MonoBehaviour
 
     public void Save()
     {
-        print("Saving");
         SaveBlob blob = SaveBlob.Create();
-        print("Create");
         string json = JsonUtility.ToJson(blob, true);
-        print(json);
         file.Delete();
-        print("Delete");
 
         using StreamWriter stream = new(file.FullName);
-        print(file.FullName);
         stream.Write(json);
-        print("Done");
     }
 
     static SaveBlob blob;
