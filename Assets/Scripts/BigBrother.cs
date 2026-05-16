@@ -7,26 +7,26 @@ using UnityEngine.Android;
 
 public class BigBrother : MonoBehaviour
 {
-    private BigBrother _instance;
-    public BigBrother instance {
+    private BigBrother _Instance;
+    public BigBrother Instance {
         get {
-            if (_instance == null)
+            if (_Instance == null)
             {
-                _instance = this;
+                _Instance = this;
             }
-            else if (_instance != this)
+            else if (_Instance != this)
             {
-                Destroy(_instance);
-                _instance = this;
+                Destroy(_Instance);
+                _Instance = this;
             }
-            return _instance;
+            return _Instance;
         }
     }
     public float test { get; private set; }
 
     readonly FileInfo file = new(Application.dataPath + "/Player data.csv");
     float timer;
-    float delay = 0.25f;
+    private readonly float delay = 0.25f;
 
     void Start()
     {

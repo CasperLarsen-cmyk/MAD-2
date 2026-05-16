@@ -147,7 +147,7 @@ public class Player : MonoBehaviour
 
     public PlayerData GetSaveData()
     {
-        PlayerData data = new PlayerData();
+        PlayerData data = new();
         data.attributes = attributes;
         data.alive = alive;
 
